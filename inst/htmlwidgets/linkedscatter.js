@@ -133,7 +133,7 @@ HTMLWidgets.widget({
       tooltip.transition()
         .duration(200)
         .style("opacity", 0.9);
-      tooltip.html(d[tooltipVar])
+      tooltip.html("<p><strong>" + tooltipVar + "</strong>: " + d[tooltipVar])
         .style("left", (d3.event.pageX + 5) + "px")
         .style("top", (d3.event.pageY - 28) + "px");
     }
