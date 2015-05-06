@@ -1,10 +1,10 @@
 Package: linkedscatter
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Little test linking scatter plots with htmlwidgets and D3
 Version: 0.1
 Date: 2015-05-06
-Author: Your name goes here
-Maintainer: person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: Hector Corrada Bravo
+Maintainer@R: person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
+Description: Linking scatterplots
+License: Artistic-2.0
 LazyData: TRUE
