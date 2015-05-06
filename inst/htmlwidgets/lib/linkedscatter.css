@@ -1,0 +1,27 @@
+body {
+  font: 11px sans-serif;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.dot {
+  stroke: #000;
+  stroke-width: 2px;
+  fill: steelblue;
+}
+
+.dot:hover {
+  stroke: orange;
+  stroke-width: 5px;
+}
+
+.tooltip {
+  position: absolute;
+  width: 200px;
+  height: 28px;
+  pointer-events: none;
+}
