@@ -7,17 +7,14 @@ This is a demonstration of the linked D3 scatterplot htmlwidget.
 
 ```{r}
 library(linkedscatter)
-npoints <- 10
-dat <- data.frame(mpg=rnorm(npoints),
-                  weight=runif(npoints),
-                  horsepower=runif(npoints) + 20,
-                  name=paste("point_",letters[1:10],sep=""))
+library(ISLR)
+data(Auto)
 ```
 
 ```{r firstPlot}
-linkedscatter(dat, x='weight', y='mpg', tooltip='name', linked=TRUE)
+linkedscatter(Auto, x='weight', y='mpg', tooltip='name', linked=TRUE)
 ```
 
 ```{r secondPlot}
-linkedscatter(dat, x='horsepower', y='mpg', tooltip='name', linked=TRUE)
+linkedscatter(Auto, x='acceleration', y='mpg', tooltip='name', linked=TRUE)
 ```
