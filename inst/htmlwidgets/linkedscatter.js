@@ -8,26 +8,21 @@ HTMLWidgets.widget({
     d3.select(el).append("svg")
         .attr("width", width)
         .attr("height", height);
-
-    var data = [
-      {x: 100, y: 25, name: 'alpha'},
-      {x: 25, y: 28, name: 'beta'},
-      {x: 200, y: 125, name: 'gamma'}
-    ];
-
-    return data;
   },
 
-  renderValue: function(el, x, data) {
+  renderValue: function(el, x, instance) {
+    var data = HTMLWidgets.dataframeToD3(x.data);
+    console.log(data);
+
     var selection = d3.select(el).select("svg")
-          .selectAll("circle")
+          .selectAll(".dot")
           .data(data);
 
     selection.enter().append("circle")
+        .attr("class", "dot")
         .attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; })
-        .attr("r", 15)
-        .style("fill", "steelblue");
+        .attr("r", 15);
   },
 
   resize: function(el, width, height, instance) {

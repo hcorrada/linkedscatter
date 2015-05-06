@@ -5,11 +5,11 @@
 #' @import htmlwidgets
 #'
 #' @export
-linkedscatter <- function(message, width = NULL, height = NULL) {
+linkedscatter <- function(data, width = NULL, height = NULL) {
 
   # forward options using x
   x = list(
-    message = message
+    data = data
   )
 
   # create widget
