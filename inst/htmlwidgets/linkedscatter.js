@@ -1,3 +1,9 @@
+var linkedscatter;
+
+function make_brush() {
+  return d3.svg.brush();
+}
+
 // compute plot dimensions given margin
 function get_plot_dimensions(width, height) {
   var margin = {top: 20, right: 20, bottom: 30, left: 40};
@@ -27,6 +33,12 @@ HTMLWidgets.widget({
 
   // setup any necessary objects
   initialize: function(el, width, height) {
+    if (!linkedscatter) linkscatter = {};
+
+    if (!linkedscatter.brush) {
+      linkedscatter.brush = make_brush();
+    }
+
     var RADIUS = 10;
 
     // compute plot dimensions and create scaling functions
@@ -51,6 +63,9 @@ HTMLWidgets.widget({
                       .attr("class", "tooltip")
                       .style("opacity", 0);
 
+    // event dispatch method to link charts
+    var dispatch = d3.dispatch("hover", "unhover");
+
     return {
       svg: svg,
       tooltip: tooltip,
@@ -58,6 +73,7 @@ HTMLWidgets.widget({
       yScale: yScale,
       plot_dimensions: plot_dimensions,
       RADIUS: RADIUS,
+      dispatch: dispatch,
     };
   },
 
@@ -122,6 +138,7 @@ HTMLWidgets.widget({
     // append circles for each data observation
     selection.enter().append("circle")
         .attr("class", "dot")
+        .attr("class", "unhovered")
         .attr("cx", function(d) {return xScale(xMap(d)); })
         .attr("cy", function(d) {return yScale(yMap(d)); })
         .attr("r", instance.RADIUS)
@@ -129,20 +146,24 @@ HTMLWidgets.widget({
         .on("mouseout", mouseout);
 
     // display observation name as tooltip
-    function mouseover(d) {
+    function mouseover(d, i) {
       tooltip.transition()
         .duration(200)
         .style("opacity", 0.9);
       tooltip.html("<p><strong>" + tooltipVar + "</strong>: " + d[tooltipVar])
         .style("left", (d3.event.pageX + 5) + "px")
         .style("top", (d3.event.pageY - 28) + "px");
+
+      dispatch.hover.apply(this, arguments);
     }
 
     // hide tooltip display
-    function mouseout(d) {
+    function mouseout(d, i) {
       tooltip.transition()
         .duration(200)
         .style("opacity", 0);
+
+      dispatch.unhover.apply(this, arguments);
     }
   },
 

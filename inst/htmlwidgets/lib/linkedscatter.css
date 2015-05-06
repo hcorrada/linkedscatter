@@ -8,15 +8,16 @@ body {
   shape-rendering: crispEdges;
 }
 
-.dot {
+.unhovered {
   stroke: #000;
   stroke-width: 2px;
   fill: steelblue;
 }
 
-.dot:hover {
+.hovered {
   stroke: orange;
   stroke-width: 5px;
+  fill: steelblue;
 }
 
 .tooltip {
