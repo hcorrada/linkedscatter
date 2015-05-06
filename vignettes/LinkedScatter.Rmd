@@ -1,0 +1,23 @@
+---
+title: "Linked D3 Scatter Plots"
+output: html_document
+---
+
+This is a demonstration of the linked D3 scatterplot htmlwidget.
+
+```{r}
+library(linkedscatter)
+npoints <- 10
+dat <- data.frame(mpg=rnorm(npoints),
+                  weight=runif(npoints),
+                  horsepower=runif(npoints) + 20,
+                  name=paste("point_",letters[1:10],sep=""))
+```
+
+```{r firstPlot}
+linkedscatter(x='weight', y='mpg', data=dat, linked=TRUE)
+```
+
+```{r secondPlot}
+linkedscatter(x='horsepower', y='mpg', data=dat, linked=TRUE)
+```
