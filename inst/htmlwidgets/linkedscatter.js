@@ -1,3 +1,19 @@
+function svg_size(width, height) {
+  var margin = {top: 20, right: 20, bottom: 30, left: 40};
+  return {
+    width: width - margin.left - margin.right,
+    height: height - margin.top - margin.bottom,
+  };
+}
+
+function make_xScale(width) {
+  return d3.scale.linear().range([0, width]);
+}
+
+function make_yScale(height) {
+  return d3.scale.linear().range([height, 0]);
+}
+
 HTMLWidgets.widget({
 
   name: 'linkedscatter',
@@ -5,9 +21,13 @@ HTMLWidgets.widget({
   type: 'output',
 
   initialize: function(el, width, height) {
+    var svg_dimensions = svg_size(width, height),
+        xScale = make_xScale(svg_dimensions.width),
+        yScale = make_yScale(svg_dimensions.height);
+
     d3.select(el).append("svg")
-        .attr("width", width)
-        .attr("height", height);
+        .attr("width", svg_dimensions.width)
+        .attr("height", svg_dimensions.height);
 
     var tooltip = d3.select(el).append("div")
                       .attr("class", "tooltip")
@@ -15,12 +35,24 @@ HTMLWidgets.widget({
 
     return {
       tooltip: tooltip,
+      xScale: xScale,
+      yScale: yScale
     };
   },
 
-  renderValue: function(el, x, instance) {
-    var data = HTMLWidgets.dataframeToD3(x.data);
-    var tooltip = instance.tooltip;
+  renderValue: function(el, bindings, instance) {
+    var data = HTMLWidgets.dataframeToD3(bindings.data),
+        tooltip = instance.tooltip,
+        xScale = instance.xScale,
+        yScale = instance.yScale,
+        radius = 10;
+
+    xScale.domain([d3.min(data, function(d) {return d.x; }) - (radius/2),
+                   d3.max(data, function(d) {return d.x; }) + (radius/2)])
+            .nice();
+    yScale.domain([d3.min(data, function(d) {return d.y; }) - (radius/2),
+                   d3.max(data, function(d) {return d.y; }) + (radius/2)])
+            .nice();
 
     var selection = d3.select(el).select("svg")
           .selectAll(".dot")
@@ -28,9 +60,9 @@ HTMLWidgets.widget({
 
     selection.enter().append("circle")
         .attr("class", "dot")
-        .attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; })
-        .attr("r", 15)
+        .attr("cx", function(d) {return xScale(d.x); })
+        .attr("cy", function(d) {return yScale(d.y); })
+        .attr("r", radius)
         .on("mouseover", mouseover)
         .on("mouseout", mouseout);
 

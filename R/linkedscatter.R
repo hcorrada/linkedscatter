@@ -8,14 +8,14 @@
 linkedscatter <- function(data, width = NULL, height = NULL) {
 
   # forward options using x
-  x = list(
+  bindings = list(
     data = data
   )
 
   # create widget
   htmlwidgets::createWidget(
     name = 'linkedscatter',
-    x,
+    bindings,
     width = width,
     height = height,
     package = 'linkedscatter'
