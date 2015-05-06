@@ -9,13 +9,13 @@ function get_plot_dimensions(width, height) {
 }
 
 // make a scaling function for x axis
-function make_xScale(width) {
-  return d3.scale.linear().range([0, width]);
+function make_xScale(width, radius) {
+  return d3.scale.linear().range([0, width + radius]);
 }
 
 // make a scaling function for y axis
-function make_yScale(height) {
-  return d3.scale.linear().range([height, 0]);
+function make_yScale(height, radius) {
+  return d3.scale.linear().range([height + radius, 0]);
 }
 
 // create the html widget
@@ -27,10 +27,12 @@ HTMLWidgets.widget({
 
   // setup any necessary objects
   initialize: function(el, width, height) {
+    var RADIUS = 10;
+
     // compute plot dimensions and create scaling functions
     var plot_dimensions = get_plot_dimensions(width, height),
-        xScale = make_xScale(plot_dimensions.width),
-        yScale = make_yScale(plot_dimensions.height);
+        xScale = make_xScale(plot_dimensions.width, RADIUS),
+        yScale = make_yScale(plot_dimensions.height, RADIUS);
 
     // append the svg element and set
     // to completely cover parent DOM element
@@ -53,7 +55,9 @@ HTMLWidgets.widget({
       svg: svg,
       tooltip: tooltip,
       xScale: xScale,
-      yScale: yScale
+      yScale: yScale,
+      plot_dimensions: plot_dimensions,
+      RADIUS: RADIUS,
     };
   },
 
@@ -70,15 +74,40 @@ HTMLWidgets.widget({
 
     // set the x scale domain based on bound data
     // with a buffer so circles don't overlap axes
-    xScale.domain([d3.min(data, function(d) {return d.x; }) - (radius/2) - 1,
-                   d3.max(data, function(d) {return d.x; }) + (radius/2) + 1])
-            .nice();
+    var xmin = d3.min(data, function(d) {return d.x; }),
+        xmax = d3.max(data, function(d) {return d.x; });
+    xScale.domain([xmin - 1, xmax + 1]).nice();
 
     // set the y scale domain based on bound data
     // with a buffer so circles don't overlap axes
-    yScale.domain([d3.min(data, function(d) {return d.y; }) - (radius/2) - 1,
-                   d3.max(data, function(d) {return d.y; }) + (radius/2) + 1])
-            .nice();
+    var ymin = d3.min(data, function(d) {return d.y; }),
+        ymax = d3.max(data, function(d) {return d.y; });
+    yScale.domain([ymin - 1, ymax + 1]).nice();
+
+    // add the x axis
+    xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+    svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + instance.plot_dimensions.height + ")")
+          .call(xAxis)
+        .append("text")
+          .attr("class", "label")
+          .attr("x", instance.plot_dimensions.width)
+          .attr("y", -6)
+          .style("text-anchor", "end")
+          .text("X");
+
+    // add the y axis
+    yAxis = d3.svg.axis().scale(yScale).orient("left");
+    svg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis)
+        .append("text")
+          .attr("class", "label")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 12)
+          .style("text-anchor", "end")
+          .text("Y");
 
     // make a selection object based on data
     var selection = svg.selectAll(".dot")
