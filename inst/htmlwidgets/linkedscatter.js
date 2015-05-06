@@ -118,7 +118,7 @@ HTMLWidgets.widget({
         .attr("class", "dot")
         .attr("cx", function(d) {return xScale(d.x); })
         .attr("cy", function(d) {return yScale(d.y); })
-        .attr("r", radius)
+        .attr("r", instance.RADIUS)
         .on("mouseover", mouseover)
         .on("mouseout", mouseout);
 
