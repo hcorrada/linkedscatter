@@ -4,6 +4,7 @@ function get_plot_dimensions(width, height) {
   return {
     width: width - margin.left - margin.right,
     height: height - margin.top - margin.bottom,
+    margin: margin
   };
 }
 
@@ -33,9 +34,14 @@ HTMLWidgets.widget({
 
     // append the svg element and set
     // to completely cover parent DOM element
-    d3.select(el).append("svg")
-        .attr("width", width)
-        .attr("height", height);
+    var svg = d3.select(el).append("svg")
+                  .attr("width", width)
+                  .attr("height", height)
+                .append("g")
+                  .attr("transform",
+                        "translate(" +
+                        plot_dimensions.margin.left + "," +
+                        plot_dimensions.margin.top + ")");
 
     // create the tooltip div
     // initialize to 0 opacity, so it's hidden
@@ -44,6 +50,7 @@ HTMLWidgets.widget({
                       .style("opacity", 0);
 
     return {
+      svg: svg,
       tooltip: tooltip,
       xScale: xScale,
       yScale: yScale
@@ -55,7 +62,8 @@ HTMLWidgets.widget({
     var data = HTMLWidgets.dataframeToD3(bindings.data);
 
     // get objects from initialized instance
-    var tooltip = instance.tooltip,
+    var svg = instance.svg,
+        tooltip = instance.tooltip,
         xScale = instance.xScale,
         yScale = instance.yScale,
         radius = 10;
@@ -73,9 +81,8 @@ HTMLWidgets.widget({
             .nice();
 
     // make a selection object based on data
-    var selection = d3.select(el).select("svg")
-          .selectAll(".dot")
-          .data(data);
+    var selection = svg.selectAll(".dot")
+                        .data(data);
 
     // append circles for each data observation
     selection.enter().append("circle")
