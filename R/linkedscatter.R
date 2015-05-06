@@ -5,11 +5,36 @@
 #' @import htmlwidgets
 #'
 #' @export
-linkedscatter <- function(data, width = NULL, height = NULL) {
+linkedscatter <- function(x=NULL, y=NULL, tooltip=NULL, data, linked=FALSE, width = NULL, height = NULL) {
+
+  # make sure data is not missing
+  stopifnot(!missing(data) || !is.data.frame(data))
+
+  names <- colnames(data)
+  # if x is missing, use the first column in data
+  if (missing('x')) {
+    x <- names[1]
+  }
+
+  # if y is missing, use the second column in data
+  if (missing('y')) {
+    y <- names[2]
+  }
+
+  # if 'tooltip' is missing, use the third column in data
+  if (missing('tooltip')) {
+    tooltip <- names[3]
+  }
+
+  # check the names are in the dataframe
+  stopifnot((x %in% names) && (y %in% names) && (tooltip %in% names))
 
   # forward options using x
   bindings = list(
-    data = data
+    data = data,
+    x = x,
+    y = y,
+    tooltip = tooltip
   )
 
   # create widget

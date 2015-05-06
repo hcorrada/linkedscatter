@@ -63,7 +63,10 @@ HTMLWidgets.widget({
 
   renderValue: function(el, bindings, instance) {
     // convert bound data from data frame to d3 array
-    var data = HTMLWidgets.dataframeToD3(bindings.data);
+    var data = HTMLWidgets.dataframeToD3(bindings.data),
+        xvar = bindings.x,
+        yvar = bindings.y,
+        tooltipVar = bindings.tooltip;
 
     // get objects from initialized instance
     var svg = instance.svg,
@@ -72,16 +75,19 @@ HTMLWidgets.widget({
         yScale = instance.yScale,
         radius = 10;
 
+    var xMap = function(d) {return d[xvar]; },
+        yMap = function(d) {return d[yvar]; };
+
     // set the x scale domain based on bound data
     // with a buffer so circles don't overlap axes
-    var xmin = d3.min(data, function(d) {return d.x; }),
-        xmax = d3.max(data, function(d) {return d.x; });
+    var xmin = d3.min(data, xMap),
+        xmax = d3.max(data, xMap);
     xScale.domain([xmin - 1, xmax + 1]).nice();
 
     // set the y scale domain based on bound data
     // with a buffer so circles don't overlap axes
-    var ymin = d3.min(data, function(d) {return d.y; }),
-        ymax = d3.max(data, function(d) {return d.y; });
+    var ymin = d3.min(data, yMap),
+        ymax = d3.max(data, yMap);
     yScale.domain([ymin - 1, ymax + 1]).nice();
 
     // add the x axis
@@ -116,8 +122,8 @@ HTMLWidgets.widget({
     // append circles for each data observation
     selection.enter().append("circle")
         .attr("class", "dot")
-        .attr("cx", function(d) {return xScale(d.x); })
-        .attr("cy", function(d) {return yScale(d.y); })
+        .attr("cx", function(d) {return xScale(xMap(d)); })
+        .attr("cy", function(d) {return yScale(yMap(d)); })
         .attr("r", instance.RADIUS)
         .on("mouseover", mouseover)
         .on("mouseout", mouseout);
@@ -127,7 +133,7 @@ HTMLWidgets.widget({
       tooltip.transition()
         .duration(200)
         .style("opacity", 0.9);
-      tooltip.html(d.name)
+      tooltip.html(d[tooltipVar])
         .style("left", (d3.event.pageX + 5) + "px")
         .style("top", (d3.event.pageY - 28) + "px");
     }
