@@ -101,7 +101,7 @@ HTMLWidgets.widget({
           .attr("x", instance.plot_dimensions.width)
           .attr("y", -6)
           .style("text-anchor", "end")
-          .text("X");
+          .text(xvar);
 
     // add the y axis
     yAxis = d3.svg.axis().scale(yScale).orient("left");
@@ -113,7 +113,7 @@ HTMLWidgets.widget({
           .attr("transform", "rotate(-90)")
           .attr("y", 12)
           .style("text-anchor", "end")
-          .text("Y");
+          .text(yvar);
 
     // make a selection object based on data
     var selection = svg.selectAll(".dot")

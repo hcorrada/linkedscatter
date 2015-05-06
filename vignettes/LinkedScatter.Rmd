@@ -15,9 +15,9 @@ dat <- data.frame(mpg=rnorm(npoints),
 ```
 
 ```{r firstPlot}
-linkedscatter(x='weight', y='mpg', data=dat, linked=TRUE)
+linkedscatter(dat, x='weight', y='mpg', tooltip='name', linked=TRUE)
 ```
 
 ```{r secondPlot}
-linkedscatter(x='horsepower', y='mpg', data=dat, linked=TRUE)
+linkedscatter(dat, x='horsepower', y='mpg', tooltip='name', linked=TRUE)
 ```

@@ -5,7 +5,7 @@
 #' @import htmlwidgets
 #'
 #' @export
-linkedscatter <- function(x=NULL, y=NULL, tooltip=NULL, data, linked=FALSE, width = NULL, height = NULL) {
+linkedscatter <- function(data, x=NULL, y=NULL, tooltip=NULL, linked=FALSE, width = NULL, height = NULL) {
 
   # make sure data is not missing
   stopifnot(!missing(data) || !is.data.frame(data))
