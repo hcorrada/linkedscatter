@@ -1,8 +1,9 @@
-function svg_size(width, height) {
+function get_plot_dimensions(width, height) {
   var margin = {top: 20, right: 20, bottom: 30, left: 40};
   return {
     width: width - margin.left - margin.right,
     height: height - margin.top - margin.bottom,
+    margin: margin,
   };
 }
 
@@ -21,13 +22,13 @@ HTMLWidgets.widget({
   type: 'output',
 
   initialize: function(el, width, height) {
-    var svg_dimensions = svg_size(width, height),
-        xScale = make_xScale(svg_dimensions.width),
-        yScale = make_yScale(svg_dimensions.height);
+    var plot_dimensions = get_plot_dimensions(width, height),
+        xScale = make_xScale(plot_dimensions.width),
+        yScale = make_yScale(plot_dimensions.height);
 
     d3.select(el).append("svg")
-        .attr("width", svg_dimensions.width)
-        .attr("height", svg_dimensions.height);
+        .attr("width", width)
+        .attr("height", height);
 
     var tooltip = d3.select(el).append("div")
                       .attr("class", "tooltip")
@@ -47,11 +48,11 @@ HTMLWidgets.widget({
         yScale = instance.yScale,
         radius = 10;
 
-    xScale.domain([d3.min(data, function(d) {return d.x; }) - (radius/2),
-                   d3.max(data, function(d) {return d.x; }) + (radius/2)])
+    xScale.domain([d3.min(data, function(d) {return d.x; }) - (radius/2) - 1,
+                   d3.max(data, function(d) {return d.x; }) + (radius/2) + 1])
             .nice();
-    yScale.domain([d3.min(data, function(d) {return d.y; }) - (radius/2),
-                   d3.max(data, function(d) {return d.y; }) + (radius/2)])
+    yScale.domain([d3.min(data, function(d) {return d.y; }) - (radius/2) - 1,
+                   d3.max(data, function(d) {return d.y; }) + (radius/2) + 1])
             .nice();
 
     var selection = d3.select(el).select("svg")
