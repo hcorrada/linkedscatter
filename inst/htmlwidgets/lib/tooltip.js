@@ -19,7 +19,18 @@ tooltip = function() {
   }
 
   chart.highlight = function(d) {
-
+    if (!d.length) {
+      _div.transition()
+        .duration(200)
+        .style("opacity", 0);
+    } else {
+      _div.html("<p><strong>" + _tooltipVar + "</strong>: " + d[0][_tooltipVar])
+        .style("left", (d3.event.pageX + 5) + "px")
+        .style("top", (d3.event.pageY - 28) + "px");
+      _div.transition()
+        .duration(200)
+        .style("opacity", 0.9);
+    }
   };
 
   // getter setter for data
