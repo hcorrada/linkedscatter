@@ -1,45 +1,56 @@
-#' linkedscatter
-#'
-#' Linked scatter plot
+#' linkedscatter-package
 #'
 #' @import htmlwidgets
+#' @docType package
+#' @name linkedscatter
+NULL
+
+#' linkedscatter
+#'
+#' Create a pair of coordinated scatter plots
 #'
 #' @export
-linkedscatter <- function(data, x=NULL, y=NULL, tooltip=NULL, linked=FALSE, width = NULL, height = NULL) {
-
-  # make sure data is not missing
-  stopifnot(!missing(data) || !is.data.frame(data))
-
+linkedscatter <- function(data, y=NULL, x1=NULL, x2=NULL, tooltip=NULL, width = NULL, height = NULL) {
   names <- colnames(data)
-  # if x is missing, use the first column in data
-  if (missing('x')) {
-    x <- names[1]
+
+  # if y is missing, use the first column in data
+  if (missing(y)) {
+    y <- names[1]
   }
 
-  # if y is missing, use the second column in data
-  if (missing('y')) {
-    y <- names[2]
+  # if x1 is missing, use the first column in data
+  if (missing(x1)) {
+    x1 <- names[1]
+  }
+
+  # if x2 is missing, use the first column in data
+  if (missing(x1)) {
+    x2 <- names[1]
   }
 
   # if 'tooltip' is missing, use the third column in data
-  if (missing('tooltip')) {
-    tooltip <- names[3]
+  if (missing(tooltip)) {
+    tooltip <- names[1]
   }
 
   # check the names are in the dataframe
-  stopifnot((x %in% names) && (y %in% names) && (tooltip %in% names))
+  stopifnot((x1 %in% names) &&
+              (x2 %in% names) &&
+              (y %in% names) &&
+              (tooltip %in% names))
 
   # forward options using x
   bindings = list(
     data = data,
-    x = x,
+    x1 = x1,
+    x2 = x2,
     y = y,
     tooltip = tooltip
   )
 
   # create widget
   htmlwidgets::createWidget(
-    name = 'linkedscatter',
+    name = "linkedscatter",
     bindings,
     width = width,
     height = height,

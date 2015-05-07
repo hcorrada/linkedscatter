@@ -8,3 +8,14 @@ dependencies:
     version: 0.1
     src: "htmlwidgets/lib"
     stylesheet: linkedscatter.css
+  - name: tooltip
+    version: 0.1
+    src: "htmlwidgets/lib"
+    script: tooltip.js
+    stylesheet: tooltip.css
+  - name: scatterplot
+    version: 0.1
+    src: "htmlwidgets/lib"
+    script: scatterplot.js
+    stylesheet: scatterplot.css
+

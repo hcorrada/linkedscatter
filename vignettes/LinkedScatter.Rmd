@@ -9,12 +9,16 @@ This is a demonstration of the linked D3 scatterplot htmlwidget.
 library(linkedscatter)
 library(ISLR)
 data(Auto)
+
+linkedscatter(Auto, y='mpg', x1='weight', x2='acceleration', tooltip='name')
 ```
 
 ```{r firstPlot}
-linkedscatter(Auto, x='weight', y='mpg', tooltip='name', linked=TRUE)
+boundAuto[["wt_mpg"]] <- linkedscatter(x='weight', y='mpg', tooltip='name')
+boundAuto[["wt_mpg"]]
 ```
 
 ```{r secondPlot}
-linkedscatter(Auto, x='acceleration', y='mpg', tooltip='name', linked=TRUE)
+boundAuto[["acc_mpg"]] <- linkedscatter(x='acceleration', y='mpg', tooltip='name')
+boundAuto[["acc_mpg"]]
 ```
