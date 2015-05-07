@@ -43,6 +43,7 @@ HTMLWidgets.widget({
         tooltipVar = bindings.tooltip,
         keyvar = bindings.key;
 
+    d3.select("#leftscatter").selectAll("*").remove();
     // make the left scatter plot
     instance.left_scatter
       .data(data)
@@ -51,6 +52,7 @@ HTMLWidgets.widget({
       .keyvar(keyvar);
     instance.left_scatter(d3.select("#leftscatter"));
 
+    d3.select("#rightscatter").selectAll("*").remove();
     // make the right scatter plot
     instance.right_scatter
       .data(data)
