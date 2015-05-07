@@ -3,11 +3,12 @@ Type: Package
 Title: Little test linking scatter plots with htmlwidgets and D3
 Version: 0.1
 Date: 2015-05-06
-Author: Hector Corrada Bravo
-Maintainer@R: person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: Linking scatterplots
+Authors@R: c(person("Hector", "Corrada Bravo", , "hcorrada@gmail.com", role = c("aut", "cre")))
+Maintainer: Hector Corrada Bravo <hcorrada@gmail.com>
+Description: D3 coordinated scatter plots
 License: Artistic-2.0
 LazyData: TRUE
 VignetteBuilder: knitr
 Suggests: ISLR, knitr
+Imports: htmlwidgets
 
