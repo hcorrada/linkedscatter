@@ -8,3 +8,6 @@ Maintainer@R: person("First", "Last", , "first.last@example.com", role = c("aut"
 Description: Linking scatterplots
 License: Artistic-2.0
 LazyData: TRUE
+VignetteBuilder: knitr
+Suggests: ISLR, knitr
+
