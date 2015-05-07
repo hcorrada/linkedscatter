@@ -40,28 +40,43 @@ HTMLWidgets.widget({
         x1var = bindings.x1,
         x2var = bindings.x2,
         yvar = bindings.y,
-        tooltipVar = bindings.tooltip;
+        tooltipVar = bindings.tooltip,
+        keyvar = bindings.key;
 
     // make the left scatter plot
     instance.left_scatter
       .data(data)
       .xvar(x1var)
-      .yvar(yvar);
+      .yvar(yvar)
+      .keyvar(keyvar);
     instance.left_scatter(d3.select("#leftscatter"));
 
     // make the right scatter plot
     instance.right_scatter
       .data(data)
       .xvar(x2var)
-      .yvar(yvar);
+      .yvar(yvar)
+      .keyvar(keyvar);
     instance.right_scatter(d3.select("#rightscatter"));
 
     // make the tooltip div
     var ttip_object = tooltip();
     ttip_object
       .data(data)
-      .tooltipVar(tooltipVar);
+      .tooltipVar(tooltipVar)
+      .keyvar(keyvar);
     ttip_object(el);
+
+    // bind the hover listeners
+    instance.left_scatter.on("hover", function(hovered) {
+      instance.right_scatter.highlight(hovered);
+      ttip_object.highlight(hovered);
+    });
+
+    instance.right_scatter.on("hover", function(hovered) {
+      instance.left_scatter.highlight(hovered);
+      ttip_object.highlight(hovered);
+    });
   },
 
   resize: function(el, width, height, instance) {

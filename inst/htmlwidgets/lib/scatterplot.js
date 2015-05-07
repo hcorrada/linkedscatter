@@ -7,7 +7,9 @@ scatterplot = function() {
       _data,
       _xvar,
       _yvar,
-      _radius;
+      _keyvar,
+      _radius,
+      _dispatch = d3.dispatch("hover");
 
   var _margin = {top: 20, right: 20, bottom: 30, left: 40};
 
@@ -84,14 +86,24 @@ scatterplot = function() {
     function mouseover(d, i) {
       var circle = d3.select(selection[0][i]);
       circle.attr("class", "hovered");
+      _dispatch.hover([d]);
     }
 
     function mouseout(d, i) {
       var circle = d3.select(selection[0][i]);
       circle.attr("class", "unhovered");
+      _dispatch.hover([]);
     }
 
   }
+
+  // highlights element hovered elsewhere
+  chart.highlight = function(data) {
+    var circles = _g.selectAll("circle")
+                      .attr("class", "unhovered");
+    circles.data(data, function(d) { return d[_keyvar]; })
+      .attr("class", "hovered");
+  };
 
   chart.set_dimensions = _set_dimensions;
   chart.update = _update;
@@ -126,13 +138,19 @@ scatterplot = function() {
     return chart;
   };
 
+  chart.keyvar = function(value) {
+    if (!arguments.length) return _keyvar;
+    _keyvar = value;
+    return chart;
+  };
+
   chart.radius = function(value) {
     if (!arguments.length) return _radius;
     _radius = value;
     return chart;
   };
 
-  return chart;
+  return d3.rebind(chart, _dispatch, "on");
 };
 
     // display observation name as tooltip

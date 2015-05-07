@@ -10,7 +10,7 @@ NULL
 #' Create a pair of coordinated scatter plots
 #'
 #' @export
-linkedscatter <- function(data, y=NULL, x1=NULL, x2=NULL, tooltip=NULL, width = NULL, height = NULL) {
+linkedscatter <- function(data, y=NULL, x1=NULL, x2=NULL, tooltip=NULL, key=NULL, width = NULL, height = NULL) {
   names <- colnames(data)
 
   # if y is missing, use the first column in data
@@ -33,11 +33,19 @@ linkedscatter <- function(data, y=NULL, x1=NULL, x2=NULL, tooltip=NULL, width = 
     tooltip <- names[1]
   }
 
+  # if 'key' is missing, use rowindex as key
+  if (missing(key)) {
+    data$key <- seq_len(nrow(data))
+    key <- "key"
+    names <- c(names, "key")
+  }
+
   # check the names are in the dataframe
   stopifnot((x1 %in% names) &&
               (x2 %in% names) &&
               (y %in% names) &&
-              (tooltip %in% names))
+              (tooltip %in% names) &&
+              (key %in% names))
 
   # forward options using x
   bindings = list(
@@ -45,7 +53,8 @@ linkedscatter <- function(data, y=NULL, x1=NULL, x2=NULL, tooltip=NULL, width = 
     x1 = x1,
     x2 = x2,
     y = y,
-    tooltip = tooltip
+    tooltip = tooltip,
+    key = key
   )
 
   # create widget
