@@ -7,14 +7,13 @@ tooltip = function() {
     _div = d3.select(el).append("div")
                       .attr("class", "tooltip")
                       .style("opacity", 0);
-    update();
+    //update();
   }
+  chart.update = _update;
 
   _update = function() {
 
   };
-
-  chart.update = _update;
 
   // getter setter for data
   chart.data = function(value) {

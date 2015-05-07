@@ -77,9 +77,20 @@ scatterplot = function() {
         .attr("class", "unhovered")
         .attr("cx", function(d) {return _xScale(xMap(d)); })
         .attr("cy", function(d) {return _yScale(yMap(d)); })
-        .attr("r", _radius);
-//        .on("mouseover", mouseover)
-//        .on("mouseout", mouseout);
+        .attr("r", _radius)
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout);
+
+    function mouseover(d, i) {
+      var circle = d3.select(selection[0][i]);
+      circle.attr("class", "hovered");
+    }
+
+    function mouseout(d, i) {
+      var circle = d3.select(selection[0][i]);
+      circle.attr("class", "unhovered");
+    }
+
   }
 
   chart.set_dimensions = _set_dimensions;

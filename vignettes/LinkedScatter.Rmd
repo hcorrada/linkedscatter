@@ -12,13 +12,3 @@ data(Auto)
 
 linkedscatter(Auto, y='mpg', x1='weight', x2='acceleration', tooltip='name')
 ```
-
-```{r firstPlot}
-boundAuto[["wt_mpg"]] <- linkedscatter(x='weight', y='mpg', tooltip='name')
-boundAuto[["wt_mpg"]]
-```
-
-```{r secondPlot}
-boundAuto[["acc_mpg"]] <- linkedscatter(x='acceleration', y='mpg', tooltip='name')
-boundAuto[["acc_mpg"]]
-```
